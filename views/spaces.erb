@@ -1,7 +1,10 @@
 <h1> Avaliable Spaces </h1>
 
-<ul style='list-style:none'>
+<ul >
 <%@spaces.each  do |space|  %>
-<li><%=space.title%></li>
+<li><%=space.title%>
+  <br>
+<%=space.description%>
+</li>
 <%end%>
 </ul>
