@@ -1,3 +1,3 @@
-require './lib/spaces.rb'
+require './app.rb'
 
 run MakersBNB

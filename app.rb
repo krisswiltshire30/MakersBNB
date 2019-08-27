@@ -1,10 +1,13 @@
 require 'sinatra/base'
 require 'sinatra'
-require 'sinatra/activerecord'
 
-set :database_file, "./config/databse.yml"
 
 class MakersBNB < Sinatra::Base
 
-
+  get '/' do
+    erb  :index
+  end 
+  get '/spaces' do
+    erb :spaces
+  end  
 end
