@@ -5,11 +5,12 @@ class Spaces
 
   attr_reader :id, :title, :description
 
-  def intialize(id:, title:, description:)
+  def initialize(id:, title:, description:)
     @id = id
     @title = title
     @description = description
   end
+
   def self.all
     if ENV['ENVIRONMENT'] == 'test'
       connection = PG.connect(dbname: 'makersbnb_test')
@@ -18,7 +19,7 @@ class Spaces
     end
 
     result = connection.exec("SELECT * FROM spaces")
-    result.map { |space| space['title']}
+    result =  result.map { |space| Spaces.new(id: space['id'], title: space['title'], description: space['description'])}
   end
 
 
