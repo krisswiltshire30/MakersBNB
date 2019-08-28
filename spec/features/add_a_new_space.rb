@@ -11,7 +11,7 @@ feature 'add new space' do
     click_button 'add'
     expect(page).to have_content 'Studio in Clapham'
     expect(page).to have_content 'super cheap and nice flat near tube station'
-    expect(page).to have_content "45.00"
+    expect(page).to have_content "45.0"
   end
 
 
