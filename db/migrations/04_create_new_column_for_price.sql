@@ -1,0 +1,1 @@
+ALTER TABLE "public"."spaces" ADD COLUMN "price_per_night" numeric
