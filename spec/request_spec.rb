@@ -34,6 +34,19 @@ describe Request do
         expect(requests[1]["requester_id"]).to eq("2")
     end
   end
+  describe "#list_for_host" do
+    it "list the requests by the owner_id" do
+      conn = PG.connect(dbname: "makersbnb_test")
+      Request.create(property_id = 1, owner_id = 1, requester_id = 2)
+      Request.create(property_id = 2, owner_id = 2, requester_id = 3)
+      Request.create(property_id = 3, owner_id = 2, requester_id = 2)
+      requests = Request.list_for_host(owner_id = 2)
+      expect(requests[0]["property_id"]).to eq("2")
+      expect(requests[0]["requester_id"]).to eq("3")
+      expect(requests[1]["property_id"]).to eq("3")
+      expect(requests[1]["requester_id"]).to eq("2")
+    end 
+  end 
 
 
 
