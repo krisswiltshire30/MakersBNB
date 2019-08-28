@@ -1,0 +1,10 @@
+<h1> Avaliable Spaces </h1>
+
+<ul >
+<%@spaces.each  do |space|  %>
+<li><%=space.title%>
+  <br>
+<%=space.description%>
+</li>
+<%end%>
+</ul>
