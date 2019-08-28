@@ -21,6 +21,10 @@ class MakersBNB < Sinatra::Base
     erb :signup
   end
 
+  post '/signup' do
+    erb :login
+  end
+
   post '/create' do
     Spaces.create(title: params[:title], description: params[:description], price_per_night: params[:price_per_night])
     redirect '/spaces'
