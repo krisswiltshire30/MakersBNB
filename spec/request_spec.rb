@@ -15,6 +15,8 @@ describe Request do
       expect(entries[1]['property_id']).to eq("2")
       expect(entries[1]['owner_id']).to eq("1")
       expect(entries[1]['requester_id']).to eq("3")
+      expect(entries[0]['status']).to eq("pending")
+      expect(entries[1]['status']).to eq("pending")
     end
   end
 
@@ -45,6 +47,19 @@ describe Request do
       expect(requests[0]["requester_id"]).to eq("3")
       expect(requests[1]["property_id"]).to eq("3")
       expect(requests[1]["requester_id"]).to eq("2")
+    end 
+    describe "#reject_request" do
+      it "reject request by the host and denied the status" do
+        conn = PG.connect(dbname: "makersbnb_test")
+        add_two_entries 
+        requests = Request.reject_request(id = 2)
+        entries = conn.exec("SELECT * FROM requests;")
+        puts entries[0]
+        puts entries[1]
+        expect(entries[1]['status']).to eq("denied")
+
+
+      end 
     end 
   end 
 
