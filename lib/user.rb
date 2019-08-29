@@ -20,4 +20,14 @@ class User
     result = connection.exec("INSERT INTO users (email, password) VALUES ('#{email}','#{encrypt_password}') RETURNING email, id ")
     User.new(id: result[0]['id'], email: result[0]['email'])
   end
+
+  def self.authenticate(email:, password:)
+    connection = if ENV['ENVIRONMENT'] == 'test'
+                   PG.connect(dbname: 'makersbnb_test')
+                 else
+                   PG.connect(dbname: 'makersbnb')
+                 end
+    result = connection.exec("select * from users where email = '#{email}'")
+    return if result.nil?
+  end
 end

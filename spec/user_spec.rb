@@ -17,4 +17,11 @@ describe 'Creates a user' do
 
     User.create(email: 'test@test.com', password: 'password123')
   end
+
+  it 'uses bcrypt to decrpyt password' do
+    expect(BCrypt::Password).to receive(:new)
+
+    User.create(email: 'test@test.com', password: 'password123')
+    User.authenticate(email: 'test@test.com', password: 'password123')
+  end
 end

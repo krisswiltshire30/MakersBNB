@@ -1,2 +1,7 @@
 <h1>Log in to MakersBNB</h1>
-<h2>hello <%=@user.email%></h2>
+
+<form class="text" action="/login" method="post">
+  <input type="text" name="email" placeholder="email">
+  <input type="text" name="password" placeholder="password">
+  <input type="submit" name="Login" value="Login">
+</form>

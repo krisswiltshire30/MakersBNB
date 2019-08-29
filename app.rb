@@ -6,9 +6,12 @@ require_relative './lib/spaces.rb'
 require_relative './lib/user.rb'
 
 class MakersBNB < Sinatra::Base
+  enable :sessions
+
   get '/' do
     erb :index
   end
+
   get '/spaces' do
     @spaces = Spaces.all
     erb :spaces
@@ -18,8 +21,20 @@ class MakersBNB < Sinatra::Base
     erb :'spaces/add'
   end
 
+  get '/user/index' do
+    erb :'user/index'
+  end
+
   get '/signup' do
     erb :signup
+  end
+
+  get '/login' do
+    erb :login
+  end
+
+  post '/login' do
+    erb :login
   end
 
   post '/signup' do
