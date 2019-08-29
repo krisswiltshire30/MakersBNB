@@ -77,8 +77,14 @@ class Request
     conn.exec(sql)
   end
 
+  def reject_other_requests 
+    if ENV['ENVIRONMENT'] == 'test'
+      conn = PG.connect(dbname: 'makersbnb_test')
+    else
+      conn = PG.connect(dbname: 'makersbnb')
+    end
+
+  end 
   attr_reader :id, :property_id, :requester_id, :owner_id, :status
-
-
 
 end

@@ -80,17 +80,30 @@ describe Request do
     end
   end
 
-  # describe "#accept_request" do
-  #   it "accept request" do
-  #     random_request = Request.new
-  #     conn = PG.connect(dbname: "makersbnb_test")
-  #     add_two_entries
-  #     requests = random_request.accept_request(id=2)
-  #     entries = conn.exec("SELECT * FROM requests;")
-  #     expect(entries[0]['status']).to eq("denied")
-  #     expect(entries[1]['status']).to eq("accepted")
-  #   end
-  # end
+  describe "#accept_request" do
+    it "accept request" do
+      conn = PG.connect(dbname: "makersbnb_test")
+      Request.create(property_id = 1, owner_id = 1, requester_id = 2)
+      Request.create(property_id = 2, owner_id = 2, requester_id = 3)
+      Request.create(property_id = 2, owner_id = 2, requester_id = 2)
+      entries = Request.list_for_space(space_id=2)
+      entries[1].accept_request
+      entries = conn.exec("SELECT * FROM requests;")
+      expect(entries[2]['status']).to eq("accepted")
+    end
+    it "denied other request when the host accept one of them" do
+      conn = PG.connect(dbname: "makersbnb_test")
+      Request.create(property_id = 1, owner_id = 1, requester_id = 2)
+      Request.create(property_id = 2, owner_id = 2, requester_id = 3)
+      Request.create(property_id = 2, owner_id = 2, requester_id = 2)
+      entries = Request.list_for_space(space_id=2)
+      entries[1].accept_request
+      entries = conn.exec("SELECT * FROM requests;")
+      expect(entries[1]['status']).to eq("denied")
+
+
+    end 
+  end
 
 
 
