@@ -36,6 +36,7 @@ describe Request do
         expect(requests[1]["requester_id"]).to eq("2")
     end
   end
+
   describe "#list_for_host" do
     it "list the requests by the owner_id" do
       conn = PG.connect(dbname: "makersbnb_test")
@@ -47,21 +48,50 @@ describe Request do
       expect(requests[0]["requester_id"]).to eq("3")
       expect(requests[1]["property_id"]).to eq("3")
       expect(requests[1]["requester_id"]).to eq("2")
-    end 
-    describe "#reject_request" do
-      it "reject request by the host and denied the status" do
-        conn = PG.connect(dbname: "makersbnb_test")
-        add_two_entries 
-        requests = Request.reject_request(id = 2)
-        entries = conn.exec("SELECT * FROM requests;")
-        puts entries[0]
-        puts entries[1]
-        expect(entries[1]['status']).to eq("denied")
+    end
+  end
 
+  describe "#list_for_space" do
+    it "fetch requests from database and encapsulate in Request instance" do
+      conn = PG.connect(dbname: "makersbnb_test")
+      Request.create(property_id = 1, owner_id = 1, requester_id = 2)
+      Request.create(property_id = 2, owner_id = 2, requester_id = 3)
+      Request.create(property_id = 2, owner_id = 2, requester_id = 2)
+      entries = Request.list_for_space(space_id=2)
+      expect(entries[0].id).to eq("2")
+      expect(entries[1].id).to eq("3")
+      expect(entries[0].requester_id).to eq("3")
+      expect(entries[1].requester_id).to eq("2")
+    end
+  end
 
-      end 
-    end 
-  end 
+  describe "#reject_request" do
+    it "reject request by the host and denied the status" do
+      conn = PG.connect(dbname: "makersbnb_test")
+      # add_two_entries
+      Request.create(property_id = 1, owner_id = 1, requester_id = 2)
+      Request.create(property_id = 2, owner_id = 2, requester_id = 3)
+      Request.create(property_id = 2, owner_id = 2, requester_id = 2)
+
+      entries = Request.list_for_space(space_id=2)
+      entries[1].reject_request
+      entries = conn.exec("SELECT * FROM requests;")
+      expect(entries[2]['status']).to eq("denied")
+    end
+  end
+
+  # describe "#accept_request" do
+  #   it "accept request" do
+  #     random_request = Request.new
+  #     conn = PG.connect(dbname: "makersbnb_test")
+  #     add_two_entries
+  #     requests = random_request.accept_request(id=2)
+  #     entries = conn.exec("SELECT * FROM requests;")
+  #     expect(entries[0]['status']).to eq("denied")
+  #     expect(entries[1]['status']).to eq("accepted")
+  #   end
+  # end
+
 
 
 
