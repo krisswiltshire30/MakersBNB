@@ -77,6 +77,8 @@ GEM
     sinatra-activerecord (2.0.13)
       activerecord (>= 3.2)
       sinatra (>= 1.0)
+    sinatra-flash (0.3.0)
+      sinatra (>= 1.0.0)
     sqlite3 (1.4.1)
     thread_safe (0.3.6)
     tilt (2.0.9)
@@ -99,6 +101,7 @@ DEPENDENCIES
   rubocop
   sinatra (= 2.0.7)
   sinatra-activerecord (= 2.0.13)
+  sinatra-flash (= 0.3.0)
   sqlite3
 
 BUNDLED WITH

@@ -16,3 +16,5 @@ gem 'rake', '12.3.3'
 gem 'rubocop'
 gem 'sinatra-activerecord', '2.0.13'
 gem 'sqlite3'
+
+gem 'sinatra-flash', '0.3.0'

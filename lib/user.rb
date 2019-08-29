@@ -27,7 +27,10 @@ class User
                  else
                    PG.connect(dbname: 'makersbnb')
                  end
-    result = connection.exec("select * from users where email = '#{email}'")
+    result = connection.exec("SELECT * FROM users WHERE email = '#{email}'")
     return if result.nil?
+    return unless BCrypt::Password.new(result[0]['password']) == password
+    return unless result[0]['email']== email
+    User.new(id: result[0]['id'], email: result[0]['email'])
   end
 end
