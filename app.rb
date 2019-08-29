@@ -3,6 +3,7 @@
 require 'sinatra'
 require 'sinatra/base'
 require_relative './lib/spaces.rb'
+require_relative './lib/user.rb'
 
 class MakersBNB < Sinatra::Base
   get '/' do
@@ -22,6 +23,7 @@ class MakersBNB < Sinatra::Base
   end
 
   post '/signup' do
+    @user = User.create(email: params[:email], password: params[:password])
     erb :login
   end
 

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'pg'
+require 'bcrypt'
 class User
   attr_reader :id, :email
 
@@ -15,7 +16,8 @@ class User
                  else
                    PG.connect(dbname: 'makersbnb')
                  end
-
-    result = connection.exec("INSERT INTO users (email, password) VALUES ('#{email}','#{password}') RETURNING email,password ")
+    encrypt_password = BCrypt::Password.create(password)
+    result = connection.exec("INSERT INTO users (email, password) VALUES ('#{email}','#{encrypt_password}') RETURNING email, id ")
+    User.new(id: result[0]['id'], email: result[0]['email'])
   end
 end
