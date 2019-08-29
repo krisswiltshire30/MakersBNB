@@ -9,7 +9,7 @@ class Request
       conn = PG.connect(dbname: 'makersbnb')
     end
 
-    sql = "INSERT INTO requests (property_id, owner_id, requester_id) VALUES('#{property_id}', '#{owner_id}', '#{requester_id}');"
+    sql = "INSERT INTO requests (property_id, owner_id, requester_id, status) VALUES('#{property_id}', '#{owner_id}', '#{requester_id}', 'pending');"
     conn.exec(sql)
   end
 
@@ -33,6 +33,15 @@ class Request
     sql = "SELECT * FROM requests WHERE owner_id = #{owner_id};"
     conn.exec(sql)
   end
+  def self.reject_request(id)
+    if ENV['ENVIRONMENT'] == 'test'
+      conn = PG.connect(dbname: 'makersbnb_test')
+    else
+      conn = PG.connect(dbname: 'makersbnb')
+    end
+    sql = "UPDATE requests SET status = 'denied' WHERE id = #{id};"
+    conn.exec(sql)
+  end  
 end 
 
 
