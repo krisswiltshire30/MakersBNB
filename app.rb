@@ -49,14 +49,18 @@ class MakersBNB < Sinatra::Base
   end
 
   post '/signup' do
-    # if params[:password] =! params[:password_confirmation]
-    #   flash[:notice] = 'Your passwords are not the same.'
-    # end
-    @user = User.create(email: params[:email], password: params[:password])
-    session[:user] = @user
-    session[:user_id] = @user.id
-    erb :login
-    redirect '/login'
+
+      if params[:password] != params[:password_confirmation]
+        flash[:notice] = 'Your passwords are not the same.'
+        redirect '/signup'
+      else
+        @user = User.create(email: params[:email], password: params[:password])
+        session[:user] = @user
+        session[:user_id] = @user.id
+        erb :login
+        redirect '/login'
+      end
+
   end
 
   post '/create' do
