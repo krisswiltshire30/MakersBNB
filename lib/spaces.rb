@@ -33,4 +33,5 @@ class Spaces
     result = connection.query("INSERT INTO spaces (title, description, price_per_night) VALUES  ('#{title}', '#{description}', '#{price_per_night}') RETURNING id, title, description,      price_per_night;")
     Spaces.new(id: result[0]['id '], title: result[0]['title'], description: result[0]['description'], price_per_night: result[0]['price_per_night'])
   end
+
 end
