@@ -47,6 +47,24 @@ class Request
     }
   end
 
+  def self.reject_other_requests(request_array, accepted_id)
+    # This method reject all requests in the array excepet the one with specifed id
+    if ENV['ENVIRONMENT'] == 'test'
+      conn = PG.connect(dbname: 'makersbnb_test')
+    else
+      conn = PG.connect(dbname: 'makersbnb')
+    end
+
+    request_array.each do |request|
+      if request.id == accepted_id
+        request.accept_request
+      else
+        request.reject_request 
+      end
+    end
+
+  end
+
   # instance method
 
   def initialize(id, property_id, requester_id, owner_id, status)
@@ -77,14 +95,11 @@ class Request
     conn.exec(sql)
   end
 
-  def reject_other_requests 
-    if ENV['ENVIRONMENT'] == 'test'
-      conn = PG.connect(dbname: 'makersbnb_test')
-    else
-      conn = PG.connect(dbname: 'makersbnb')
-    end
 
-  end 
+
+
+
+
   attr_reader :id, :property_id, :requester_id, :owner_id, :status
 
 end
