@@ -1,11 +1,21 @@
- require 'spec_helper'
- require 'pg'
+# frozen_string_literal: true
+
+require 'spec_helper'
+require 'pg'
 
 feature 'show list of spaces' do
   scenario 'list spaces' do
     visit '/'
-    click_button('Show Spaces')
-    expect(page).to have_content "Avaliable Spaces"
+    click_button 'Sign up'
+    fill_in 'email', with: 'steve@steve.com'
+    fill_in 'password', with: 'password'
+    fill_in 'password_confirmation', with: 'password'
+    click_button 'Sign up'
+    fill_in 'email', with: 'steve@steve.com'
+    fill_in 'password', with: 'password'
+    click_button 'Login'
+    click_button('Show spaces')
+    expect(page).to have_content 'Avaliable Spaces'
   end
   scenario 'list spaces with title' do
     connection = PG.connect(dbname: 'makersbnb_test')
@@ -14,10 +24,18 @@ feature 'show list of spaces' do
     connection.exec("INSERT INTO spaces (title) VALUES ('4-bedroom flat in Belgravia');")
     connection.exec("INSERT INTO spaces (title) VALUES ('Studio flat in Central London');")
     visit '/'
-    click_button('Show Spaces')
-    expect(page).to have_content "Cosy cottage in Cotswolds"
-    expect(page).to have_content "4-bedroom flat in Belgravia"
-    expect(page).to have_content "Studio flat in Central London"
+    click_button 'Sign up'
+    fill_in 'email', with: 'steve@steve.com'
+    fill_in 'password', with: 'password'
+    fill_in 'password_confirmation', with: 'password'
+    click_button 'Sign up'
+    fill_in 'email', with: 'steve@steve.com'
+    fill_in 'password', with: 'password'
+    click_button 'Login'
+    click_button('Show spaces')
+    expect(page).to have_content 'Cosy cottage in Cotswolds'
+    expect(page).to have_content '4-bedroom flat in Belgravia'
+    expect(page).to have_content 'Studio flat in Central London'
   end
 
   scenario 'list spaces with title' do
@@ -27,7 +45,15 @@ feature 'show list of spaces' do
     connection.exec("INSERT INTO spaces (title, description) VALUES ('4-bedroom flat in Belgravia', 'Also really nice, and smells good.');")
     connection.exec("INSERT INTO spaces (title, description) VALUES ('Studio flat in Central London', 'Just ok.');")
     visit '/'
-    click_button('Show Spaces')
+    click_button 'Sign up'
+    fill_in 'email', with: 'steve@steve.com'
+    fill_in 'password', with: 'password'
+    fill_in 'password_confirmation', with: 'password'
+    click_button 'Sign up'
+    fill_in 'email', with: 'steve@steve.com'
+    fill_in 'password', with: 'password'
+    click_button 'Login'
+    click_button('Show spaces')
     expect(page).to have_content 'Really nice.'
     expect(page).to have_content 'Also really nice, and smells good.'
     expect(page).to have_content 'Just ok.'
