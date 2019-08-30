@@ -1,5 +1,9 @@
 <h1> Avaliable Spaces </h1>
 
+<form action='/logout'>
+    <button>Logout</button>
+</form>
+
 <ul >
 <%@spaces.each  do |space|  %>
 <li><%=space.title%>
@@ -7,6 +11,9 @@
 <%=space.description%>
  <br>
 €<%=space.price_per_night%>
+<form action='/book/<%=space.id%>'>
+    <button> Book </button>
+</form>
 </li>
 <%end%>
 </ul>

@@ -5,6 +5,7 @@ require 'sinatra/base'
 require 'sinatra/flash'
 require_relative './lib/spaces.rb'
 require_relative './lib/user.rb'
+require_relative './lib/request.rb'
 
 class MakersBNB < Sinatra::Base
   enable :sessions
@@ -64,7 +65,8 @@ class MakersBNB < Sinatra::Base
   end
 
   post '/create' do
-    Spaces.create(title: params[:title], description: params[:description], price_per_night: params[:price_per_night])
+
+    Spaces.create(title: params[:title], description: params[:description], price_per_night: params[:price_per_night], owner_id: session[:user_id] )
     redirect '/spaces'
   end
 
@@ -72,5 +74,10 @@ class MakersBNB < Sinatra::Base
     session.clear
     flash[:notice] = 'You have signed out.'
     redirect '/'
+  end
+
+  get '/book/:id' do
+    flash[:notice] = 'Request was sent.'
+
   end
 end
