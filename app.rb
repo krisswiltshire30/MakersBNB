@@ -67,4 +67,10 @@ class MakersBNB < Sinatra::Base
     Spaces.create(title: params[:title], description: params[:description], price_per_night: params[:price_per_night])
     redirect '/spaces'
   end
+
+  get '/logout' do
+    session.clear
+    flash[:notice] = 'You have signed out.'
+    redirect '/'
+  end
 end

@@ -22,6 +22,5 @@ describe 'Creates a user' do
     expect(BCrypt::Password).to receive(:new)
 
     User.create(email: 'test@test.com', password: 'password123')
-    User.authenticate(email: 'test@test.com', password: 'password123')
   end
 end
