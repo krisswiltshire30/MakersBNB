@@ -5,6 +5,18 @@ require 'pg'
 class Spaces
   attr_reader :id, :title, :description, :price_per_night, :owner_id
 
+  def self.fetch_owner_id(space_id)
+    connection = if ENV['ENVIRONMENT'] == 'test'
+      PG.connect(dbname: 'makersbnb_test')
+    else
+      PG.connect(dbname: 'makersbnb')
+    end
+
+    sql = "SELECT * FROM spaces WHERE id = #{space_id};"
+    entries = connection.exec(sql)
+    entries[0]['owner_id'].to_i
+  end
+
   def initialize(id:, title:, description:, price_per_night:, owner_id:)
     @id = id
     @title = title

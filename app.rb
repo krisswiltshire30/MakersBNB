@@ -78,6 +78,43 @@ class MakersBNB < Sinatra::Base
 
   get '/book/:id' do
     flash[:notice] = 'Request was sent.'
+    space_id = params[:id]
+    owner_id = Spaces.fetch_owner_id(space_id)
+    requester_id = session[:user_id]
+    Request.create(space_id, owner_id, requester_id)
+    redirect '/spaces'
+  end
 
+  # my requests route
+  get '/my_requests' do
+    @user_id = session[:user_id]
+    "@list_as_guest = "
+    @list_as_guest = Request.list_for_guest(@user_id)
+    if @list_as_guest == []
+      @list_as_guest_m = 0
+    else
+      "@list_as_guest_m = "
+      @list_as_guest_m = @list_as_guest.map do |element|
+        [Request.fetch_info(element.owner_id),
+          Request.fetch_space_info(element.property_id),
+          element.status]
+      end
+    end
+
+
+    # as owner
+    @list_as_owner = Request.list_for_host(@user_id)
+      if @list_as_owner == []
+        @list_as_owner_m = 0
+      else
+        @list_as_owner_m = @list_as_owner.map do |element|
+          [Request.fetch_info(element.requester_id),
+            Request.fetch_space_info(element.property_id),
+            element.status]
+
+          end
+      end
+
+    erb :'user/myrequest'
   end
 end

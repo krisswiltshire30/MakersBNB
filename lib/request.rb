@@ -19,8 +19,10 @@ class Request
     else
       conn = PG.connect(dbname: 'makersbnb')
     end
-    sql = "SELECT * FROM requests WHERE requester_id = #{requester_id};"
-    conn.exec(sql)
+    data = conn.exec("SELECT * FROM requests WHERE requester_id = #{requester_id};")
+    data.map{ |entry|
+      Request.new(entry['id'], entry['property_id'], entry['requester_id'], entry['owner_id'], entry['status'])
+    }
   end
 
   def self.list_for_host(owner_id)
@@ -30,7 +32,10 @@ class Request
       conn = PG.connect(dbname: 'makersbnb')
     end
     sql = "SELECT * FROM requests WHERE owner_id = #{owner_id};"
-    conn.exec(sql)
+    data = conn.exec(sql)
+    data.map{ |entry|
+      Request.new(entry['id'], entry['property_id'], entry['requester_id'], entry['owner_id'], entry['status'])
+    }
   end
 
   def self.list_for_space(space_id)
@@ -59,7 +64,7 @@ class Request
       if request.id == accepted_id
         request.accept_request
       else
-        request.reject_request 
+        request.reject_request
       end
     end
 
@@ -93,6 +98,29 @@ class Request
     end
     sql = "UPDATE requests SET status = 'accepted' WHERE id = #{@id}"
     conn.exec(sql)
+  end
+
+  # following methods are used to fetch detail based on ids
+  def self.fetch_info(id)
+    connection = if ENV['ENVIRONMENT'] == 'test'
+      PG.connect(dbname: 'makersbnb_test')
+    else
+      PG.connect(dbname: 'makersbnb')
+    end
+
+    puts id
+    entries = connection.exec("SELECT * FROM users WHERE id = #{id};")
+    entries[0]['email']
+  end
+
+  def self.fetch_space_info(space_id)
+    connection = if ENV['ENVIRONMENT'] == 'test'
+      PG.connect(dbname: 'makersbnb_test')
+    else
+      PG.connect(dbname: 'makersbnb')
+    end
+    entries = connection.exec("SELECT * FROM spaces WHERE id = #{space_id};")
+    entries[0]
   end
 
 
